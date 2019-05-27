@@ -1,0 +1,19 @@
+name: Vince_MC_Git
+version: 1
+formatVersion: 1
+inputs:
+  SelectCloud:
+    type: string
+    enum:
+      - 'cloud:vsphere'
+      - 'cloud:aws'
+      - 'cloud:azure'
+      - 'cloud:gcp'
+resources:
+  Cloud_Machine_1:
+    type: Cloud.Machine
+    properties:
+      image: CloudImage
+      flavor: Small
+      constraints:
+        - tag: '${input.SelectCloud}'
