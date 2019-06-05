@@ -1,0 +1,50 @@
+name: AWS
+version: 2
+inputs: {}
+resources:
+  My_EC2:
+    type: Cloud.AWS.EC2.Instance
+    metadata:
+      layoutPosition:
+        - 0
+        - 0
+    properties:
+      image: CloudImage
+      flavor: Small
+  My_S3_Bucket:
+    type: Cloud.Service.AWS.S3.Bucket
+    metadata:
+      layoutPosition:
+        - 0
+        - 1
+    properties:
+      region: us-east-1
+      account: Vincent_AWS
+      bucket_prefix: cas
+      bucket: mybucketcas
+  PubNW:
+    type: Cloud.Network
+    metadata:
+      layoutPosition:
+        - 1
+        - 0
+    properties:
+      name: Vincent_AWS_Net
+      networkType: public
+  ApplicationLB:
+    type: Cloud.LoadBalancer
+    metadata:
+      layoutPosition:
+        - 0
+        - 2
+    properties:
+      name: my-lb
+      routes:
+        - instanceProtocol: http
+          instancePort: 80
+          protocol: http
+          port: 80
+      network: '${resource.PubNW.name}'
+      internetFacing: false
+      instances:
+        - '${resource.My_EC2.id}'
