@@ -20,7 +20,7 @@ resources:
         - 1
     properties:
       region: us-east-1
-      account: Vincent_AWS
+      account: AWS
       bucket_prefix: cas
       bucket: mybucketcas
   PubNW:
