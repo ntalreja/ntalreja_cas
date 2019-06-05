@@ -1,5 +1,6 @@
 name: AWS
 version: 2
+formatVersion: 1
 inputs: {}
 resources:
   My_EC2:
