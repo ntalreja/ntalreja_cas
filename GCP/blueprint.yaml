@@ -1,0 +1,48 @@
+name: GCP
+version 2.8
+formatVersion: 1
+inputs:
+  capacitydisk:
+    type: integer
+    default: 1
+    maximum: 2
+    minimum: 1
+  count:
+    type: integer
+    default: 1
+    maximum: 2
+    minumum: 1
+    title: Count of VMs
+  size:
+    type: string
+    enum:
+      - small
+      - large
+    description: size of nodes
+    title: Node Size
+  image:
+    type: string
+    enum:
+      - CloudImage
+      - Ubuntu
+resources:
+  Cloud_GCP_Machine_1:
+    type: Cloud.GCP.Machine
+    metadata:
+      layoutPosition:
+        - 0
+        - 0
+    properties:
+      name: wordpress
+      flavor: '${input.size}'
+      image: '${input.image}'
+      count: '${input.count}'
+  Cloud_GCP_Disk_1:
+    type: Cloud.GCP.Disk
+    metadata:
+      layoutPosition:
+        - 1
+        - 0
+    properties:
+      capacityGb: '${input.capacitydisk}'
+      persistent: false
