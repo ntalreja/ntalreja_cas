@@ -1,3 +1,5 @@
+name: vSphere BP GIT
+version: 1
 formatVersion: 1
 inputs:
   storage:
