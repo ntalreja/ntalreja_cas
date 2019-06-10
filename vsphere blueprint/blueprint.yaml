@@ -1,0 +1,19 @@
+formatVersion: 1
+inputs:
+  storage:
+    type: string
+    enum:
+      - iscsi
+      - nfs
+resources:
+  demo_machine:
+    type: Cloud.vSphere.Machine
+    properties:
+      storage:
+        constraints:
+          - tag: 'storage:${input.storage}'
+      name: casvm
+      cpuCount: 2
+      totalMemoryMB: 2048
+      image: CloudImage
+      count: 1
