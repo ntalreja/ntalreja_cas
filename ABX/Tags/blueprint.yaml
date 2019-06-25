@@ -1,0 +1,38 @@
+formatVersion: 1
+inputs:
+  SelectCloud:
+    type: string
+    enum:
+      - 'cloud:aws'
+      - 'cloud:vsphere'
+  AvailabilityZone:
+    type: string
+    enum:
+      - us-east-2
+      - us-east-1
+resources:
+  Application_VM:
+    type: Cloud.Machine
+    properties:
+      image: CloudImage
+      flavor: small
+      constraints:
+        - tag: '${input.SelectCloud}'
+        - tag: '${self.address}'
+        - tag: '${input.AvailabilityZone}:soft'
+  DB_VM:
+    type: Cloud.Machine
+    properties:
+      tags:
+        - value: CASWorkshop
+          key: cas.resource.desc
+        - value: '${env.requestedBy}'
+          key: cas.requestedBy
+        - value: '${env.projectName}'
+          key: cas.project.name
+        - value: '${resource.DB_VM.count}'
+          key: cas.resource.name
+      image: CloudImage
+      flavor: small
+      constraints:
+        - tag: '${input.SelectCloud}'
