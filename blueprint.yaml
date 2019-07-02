@@ -17,3 +17,4 @@ resources:
       flavor: Small
       constraints:
         - tag: '${input.SelectCloud}'
+        - tag: '${env.projectName}'
