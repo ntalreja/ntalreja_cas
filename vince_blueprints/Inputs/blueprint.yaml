@@ -1,5 +1,6 @@
-formatVersion: 1
 name: Inputs
+version: 4
+formatVersion: 1
 inputs:
   image:
     type: string
