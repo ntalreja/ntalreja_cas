@@ -18,3 +18,4 @@ resources:
       constraints:
         - tag: '${input.SelectCloud}'
         - tag: '${env.projectName}'
+      count: 1
