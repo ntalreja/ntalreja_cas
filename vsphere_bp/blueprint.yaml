@@ -1,0 +1,37 @@
+formatVersion: 1
+version: 2
+name: Puppet Enabled Blueprint (git)
+inputs:
+  username:
+    type: string
+    title: Username
+    description: Username to use to install Puppet agent
+    default: puppet
+  password:
+    type: string
+    title: Password
+    default: VMware@123
+    encrypted: true
+    description: Password for the given username to install Puppet agent
+resources:
+  Puppet-Ubuntu:
+    type: Cloud.vSphere.Machine
+    properties:
+      flavor: small
+      imageRef: 'https://cloud-images.ubuntu.com/releases/16.04/release-20170307/ubuntu-16.04-server-cloudimg-amd64.ova'
+      remoteAccess:
+        authentication: usernamePassword
+        username: '${input.username}'
+        password: '${input.password}'
+  Puppet_Agent:
+    type: Cloud.Puppet
+    properties:
+      provider: PEMasterOnPrem
+      environment: production
+      role: 'role::linux_webserver'
+      username: '${input.username}'
+      password: '${input.password}'
+      host: ''
+      useSudo: true
+      agentConfiguration:
+        certName: '${Puppet-Ubuntu.address}'
