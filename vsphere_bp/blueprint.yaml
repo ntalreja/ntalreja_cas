@@ -1,6 +1,6 @@
-formatVersion: 1
-version: 2
 name: Puppet Enabled Blueprint (git)
+version: 1
+formatVersion: 1
 inputs:
   username:
     type: string
