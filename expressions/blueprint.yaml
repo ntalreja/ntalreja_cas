@@ -1,0 +1,66 @@
+name: expressions example (git)
+version: 1
+formatVersion: 1
+inputs:
+  environment:
+    type: string
+    enum:
+      - AWS
+      - vSphere
+      - Azure
+      - VMC
+      - GCP
+    default: vSphere
+  sshKey:
+    type: string
+    maxLength: 500
+  envsize:
+    type: string
+    enum:
+      - Small
+      - Large
+resources:
+  frontend:
+    type: Cloud.Machine
+    properties:
+      folderName: '${input.environment == "VMC" ? "Workload" : ""}'
+      image: CloudImage
+      flavor: medium
+      count: '${input.envsize == "Small" ? 1 : 2}'
+      remoteAccess:
+        authentication: publicPrivateKey
+        sshKey: '${input.sshKey}'
+      cloudConfig: |
+        packages:
+          - nginx
+        runcmd:
+          - echo ${resource.apitier.networks[0].address}
+      constraints:
+        - tag: '${"env:" + to_lower(input.environment)}'
+      networks:
+        - name: '${resource.Cloud_Network_1.name}'
+  apitier:
+    type: Cloud.Machine
+    properties:
+      folderName: '${input.environment == "VMC" ? "Workload" : ""}'
+      image: CloudImage
+      flavor: small
+      cloudConfig: |
+        #cloud-config
+        runcmd:
+          - export apikey=${base64_encode(input.username:input.password)}
+          - curl -i -H 'Accept:application/json' -H 'Authorization:Basic :$apikey' http://example.com
+      remoteAccess:
+        authentication: publicPrivateKey
+        sshKey: '${input.sshKey}'
+      constraints:
+        - tag: '${"env:" + to_lower(input.environment)}'
+      networks:
+        - name: '${resource.Cloud_Network_1.name}'
+  Cloud_Network_1:
+    type: Cloud.Network
+    properties:
+      name: Default
+      networkType: existing
+      constraints:
+        - tag: '${"env:" + to_lower(input.environment)}'
