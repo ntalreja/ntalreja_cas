@@ -1,6 +1,6 @@
-formatVersion: 1
+formatVersion: 2
 name: opencart
-version: 1
+version: 2
 inputs:
   user:
     type: string
