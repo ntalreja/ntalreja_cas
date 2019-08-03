@@ -1,6 +1,6 @@
 formatVersion: 1
 name: opencart
-version: 2
+version: 3
 inputs:
   user:
     type: string
@@ -19,6 +19,9 @@ resources:
     properties:
       image: ubuntu
       flavor: Medium
+      remoteAccess: 
+        authentication: keyPairName
+        keyPair: devops
       cloudConfig: |
         repo_update: true
         repo_upgrade: all
@@ -97,7 +100,7 @@ resources:
           - echo "ocuser ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
           - echo 'Cloud-init is done!' >> /tmp/finished.txt
       constraints:
-        - tag: 'env:aws'
+        - tag: 'aws'
       networks:
         - name: '${resource.Cloud_Network_1.name}'
   mysql:
@@ -105,6 +108,9 @@ resources:
     properties:
       image: ubuntu
       flavor: Medium
+      remoteAccess: 
+        authentication: keyPairName
+        keyPair: devops
       cloudConfig: |
         repo_update: true
         repo_upgrade: all
@@ -149,7 +155,7 @@ resources:
           - mysql -u root -e 'flush privileges'
           - echo 'Cloud-init is done!' >> /tmp/finished.txt
       constraints:
-        - tag: 'env:aws'
+        - tag: 'aws'
       networks:
         - name: '${resource.Cloud_Network_1.name}'
   Cloud_Network_1:
@@ -158,4 +164,4 @@ resources:
       name: oc_network
       networkType: existing
       constraints:
-        - tag: 'env:aws'
+        - tag: 'aws'
