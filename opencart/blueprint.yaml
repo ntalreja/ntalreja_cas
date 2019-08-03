@@ -57,7 +57,7 @@ resources:
           - echo ${input.user}:$PASS | /usr/sbin/chpasswd
           - sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config
           - service ssh reload         
-          - git clone https://github.com/mcclanc/opencart-demo.git /tmp/opencart
+          - git clone https://github.com/vriccio512/opencart-demo.git /tmp/opencart
           - mv /tmp/opencart /var/www/
           - chown -R www-data.www-data /var/www/opencart
           - chmod -R 775 /var/www/opencart
