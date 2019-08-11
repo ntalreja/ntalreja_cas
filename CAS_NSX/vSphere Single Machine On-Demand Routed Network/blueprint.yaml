@@ -1,0 +1,33 @@
+name: vSphere Single Machine Existing NSX Network
+version: 1
+formatVersion: 1
+inputs: {}
+resources:
+  nsx_existing_network:
+    type: Cloud.NSX.Network
+    metadata:
+      layoutPosition:
+        - 0
+        - 0
+    properties:
+      networkType: existing
+      name: Dell-VLAN70
+      constraints:
+        - tag: 'NSX:VLAN70'
+  vsphere_single_machine:
+    type: Cloud.vSphere.Machine
+    metadata:
+      layoutPosition:
+        - 1
+        - 0
+    properties:
+      name: vsphere-single-machine
+      flavor: small
+      image: ubuntu1804-base
+      customizationSpec: cas-linux
+      networks:
+        - network: '${resource.nsx_existing_network.id}'
+          assignment: static
+      constraints:
+        - tag: 'Cluster:Dell'
+        - tag: 'cloud:vc01'
