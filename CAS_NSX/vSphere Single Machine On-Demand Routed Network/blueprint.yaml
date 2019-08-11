@@ -1,19 +1,19 @@
-name: vSphere Single Machine Existing NSX Network
+name: vSphere Single Machine Existing On-Demand Routed Network
 version: 1
 formatVersion: 1
 inputs: {}
 resources:
-  nsx_existing_network:
+  nsx_od_routed_network:
     type: Cloud.NSX.Network
     metadata:
       layoutPosition:
         - 0
         - 0
     properties:
-      networkType: existing
-      name: Dell-VLAN70
+      # must use a /28 or bigger for routed
+      networkType: routed
       constraints:
-        - tag: 'NSX:VLAN70'
+        - tag: 'NSX:Dell-OD28'
   vsphere_single_machine:
     type: Cloud.vSphere.Machine
     metadata:
@@ -26,7 +26,7 @@ resources:
       image: ubuntu1804-base
       customizationSpec: cas-linux
       networks:
-        - network: '${resource.nsx_existing_network.id}'
+        - network: '${resource.nsx_od_routed_network.id}'
           assignment: static
       constraints:
         - tag: 'Cluster:Dell'
