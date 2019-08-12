@@ -1,4 +1,4 @@
-name: AWS
+##name: AWS
 version: 2
 inputs: {}
 resources:
