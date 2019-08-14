@@ -10,7 +10,7 @@ resources:
       flavor: small
       constraints:
         - tag: 'cloud:aws'
-       cloudConfig: |
+      cloudConfig: |
         #cloud-config
         repo_update: true
         apt:
