@@ -3,13 +3,13 @@ name: Chef
 version: 1
 inputs: {}
 resources:
-  ansible_control_machine:
-    type: Cloud.Machine
+  My_EC2:
+    type: Cloud.AWS.EC2.Instance
     properties:
       image: Ubuntu
       flavor: small
       constraints:
-        - tag: 'cloud:aws'
+        - tag: aws
       cloudConfig: |
         #cloud-config
         repo_update: true
