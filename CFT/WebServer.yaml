@@ -25,7 +25,7 @@ Resources:
           files: 
             /var/www/html/index.php:
               content: !Sub |
-                <?php print "Hello world Abs was here!"; ?>
+                <?php print "Hello world Vince was here!"; ?>
           services: 
             sysvinit:
               httpd:
