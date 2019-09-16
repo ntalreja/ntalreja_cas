@@ -1,0 +1,96 @@
+# installing ansible for CAS using a non-privileged user (AVOID ROOT)
+
+command:
+sudo apt-add-repository ppa:ansible/ansible
+sudo apt-get install ansible
+
+# create Ansible Vault in /etc/ansible
+
+command:
+sudo ansible-vault create passwordVault.yml
+
+# Enter a password twice.
+
+# Add content to the vault
+
+example:
+---
+vault_sudo_password: "VMware1!"
+
+# Create Ansible Vault Password File
+
+commands:
+sudo touch vault.yml
+sudo nano vault.yml
+example:
+
+# VMware1! is the password I used to create the passwordVault
+
+cas-admin@ansible:/etc/ansible$ cat vault.yml
+VMware1!
+cas-admin@ansible:/etc/ansible$
+
+# Modify the Ansible Configuration File
+
+command:
+sudo nano /etc/ansible/ansible.cfg
+
+# Change these settings in ansible.cfg
+
+inventory = /etc/ansible/hosts
+host_key_checking = False
+log_path = /var/log/ansible.log
+private_key_file = /home/cas-admin/.ssh/id_rsa
+vault_password_file = /etc/ansible/vault.yml
+deprecation_warnings = False
+command:
+sudo nano /etc/ansible/hosts
+
+# in hosts add to the bottom of the file
+
+[lab]
+alias ansible_host=YOURIP ansible_connection=local
+
+# change permissions
+
+sudo adduser cas-admin root
+sudo chmod 775 /etc/ansible
+sudo chmod 664 /etc/ansible/hosts
+sudo chmod 664 /var/log/ansible.log
+
+# Create group_vars folder if you want to use them
+
+commands:
+mkdir /etc/ansible/group_vars
+sudo chmod 775 /etc/ansible/group_vars
+
+# Create group vars files if you want to use them
+
+sudo nano groupname.yml
+sudo chmod 664 groupname.yml
+
+# Convert your template to a VM and power it on
+
+# You can do this through cloud-init if you don't want to do it this way
+
+command:
+ssh-copy-id cas-admin@TemplateIP
+
+# Testing
+
+command:
+ansible all -m ping
+
+example:
+
+cas-admin@ansible:/etc/ansible$ ansible all -m ping
+alias | SUCCESS => {
+    "ansible_facts": {
+        "discovered_interpreter_python": "/usr/bin/python"
+    },
+    "changed": false,
+    "ping": "pong"
+}
+cas-admin@ansible:/etc/ansible$
+
+# You should be good to configure the Ansible integration in Cloud Assembly.
