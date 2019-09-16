@@ -1,0 +1,7 @@
+Instructions for making Ansible work with vRealize Automation Cloud.
+
+Ansible hosts file config
+
+docker.yml
+
+Cloud Assembly blueprint
