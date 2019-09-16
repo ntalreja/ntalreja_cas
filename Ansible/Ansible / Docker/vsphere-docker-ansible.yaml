@@ -1,0 +1,48 @@
+name: vSphere Docker Host
+version: 1
+formatVersion: 1
+inputs: {}
+resources:
+  vsphere_existing_network:
+    type: Cloud.vSphere.Network
+    metadata:
+      layoutPosition:
+        - 0
+        - 0
+    properties:
+      networkType: existing
+      name: VM-60-Static
+      constraints:
+        - tag: 'net:VLAN60'
+  docker-host:
+    type: Cloud.vSphere.Machine
+    metadata:
+      layoutPosition:
+        - 1
+        - 0
+    properties:
+      name: docker-host
+      flavor: small
+      image: ubuntu1804-base
+      customizationSpec: cas-linux
+      networks:
+        - network: '${resource.vsphere_existing_network.id}'
+          assignment: dynamic
+      constraints:
+        - tag: 'Cluster:Dell'
+        - tag: 'cloud:vc01'
+  Ansible_Docker:
+    type: Cloud.Ansible
+    metadata:
+      layoutPosition:
+        - 2
+        - 0
+    properties:
+      host: '${resource.docker-host.*}'
+      osType: linux
+      account: ansible.home.lab
+      username: cas-admin
+      privateKeyFile: ~/.ssh/id_rsa
+      playbooks:
+        provision:
+          - /home/cas-admin/playbooks/tburge/docker.yml
