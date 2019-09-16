@@ -1,0 +1,54 @@
+---
+- name: Install Docker
+  hosts: all
+  connection: ssh
+  gather_facts: yes
+  become: true
+  tasks:
+    - name: Add Official Docker Repository Key for Bionic
+      apt_key: 
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+    
+    - name: Add Official Docker Repository for Bionic
+      apt_repository:
+        repo: 'deb https://download.docker.com/linux/ubuntu bionic stable'
+        state: present
+        update_cache: yes
+​
+    - name: Install Pre-Requisites
+      apt:
+        name: "{{ packages }}"
+      vars:
+        packages:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+    
+    - name: Install Docker-CE
+      apt: 
+        name: docker-ce
+        state: present
+        update_cache: yes
+​
+    - name: Install Docker Compose
+      apt:
+        name: docker-compose
+        state: present
+        update_cache: yes
+​
+    - name: Add User to Docker Group
+      command: usermod -aG docker cas-admin
+    
+    - name: Set Docker to Start on Boot
+      command: systemctl enable docker
+​
+    - name: Set Docker Remote Access
+      command: /bin/sed -i 's@ExecStart=/usr/bin/dockerd -H fd://@ExecStart=/usr/bin/dockerd -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock@' /lib/systemd/system/docker.service
+​
+    - name: Reload the Systemctl Configuration
+      command: systemctl daemon-reload
+​
+    - name: Restart Docker
+      command: systemctl restart docker.service
