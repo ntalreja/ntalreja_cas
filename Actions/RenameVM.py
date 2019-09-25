@@ -19,3 +19,7 @@ def handler(context, inputs):
     print("Setting machine name from {0} to {1}".format(old_name, new_name))
 
     return outputs
+    
+    print(0)
+    
+    #test git sync
