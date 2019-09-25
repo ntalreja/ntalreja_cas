@@ -1,0 +1,20 @@
+---
+exportVersion: "1"
+exportId: "8a76984a6b2d9557016b34f90b720721"
+name: "Custom_Script"
+runtime: "python"
+entrypoint: "handler"
+description: "Lambda"
+inputs:
+  target: "Everybody"
+timeoutSeconds: 180
+deploymentTimeoutSeconds: 600
+actionType: "SCRIPT"
+configuration:
+  const-providers:
+  - "aws"
+  const_aws-iam_role: "MyLambda"
+  const_azure-system_managed_identity: false
+actionTemplateName: "Custom script"
+actionTemplateNamespace: "com.vmware.automation.abx"
+memoryInMB: 150
