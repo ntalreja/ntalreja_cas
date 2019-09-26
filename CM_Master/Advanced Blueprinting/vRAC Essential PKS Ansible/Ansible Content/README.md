@@ -11,4 +11,4 @@ Process
 * Navigate to your playbooks directory
 * Clone this Repository
 * CD to that directory
-* Clone the Wardroom fork
+* Clone the [Wardroom fork](https://github.com/codyde/wardroom)
