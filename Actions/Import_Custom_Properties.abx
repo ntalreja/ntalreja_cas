@@ -1,0 +1,16 @@
+---
+exportVersion: "1"
+exportId: "8a769ebf6bbd0ad0016bc069ff14038d"
+name: "Import_Custom_Properties"
+runtime: "python"
+entrypoint: "handler"
+inputs:
+  target: "World"
+timeoutSeconds: 180
+deploymentTimeoutSeconds: 600
+actionType: "SCRIPT"
+configuration:
+  const-providers:
+  - ""
+  const_azure-system_managed_identity: false
+memoryInMB: 150
