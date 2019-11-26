@@ -1,22 +1,43 @@
-name: Blueprint Expressions Sample
+name: Advanced Blueprint Example
 formatVersion: 1
 version: 1
 inputs:
-  env:
+  platform:
+    type: string
+    title: Deploy to
+    oneOf:   # This type of list is fairly common, you could also use "enum" instead of "oneOf", the nice thing about "oneOf" is that you can provide a title and constraint in the list.
+      - title: AWS
+        const: aws
+      - title: Azure
+        const: azure
+      - title: vSphere
+        const: vsphere
+    default: vsphere 
+  image:
+    type: string #String with enumeration -enum, this will simply provide a dropdown
+    title: Operating System
+    description: Which OS to use
+    enum:
+      - Ubuntu
+      - Windows
+  dbenvsize:
     type: string
     enum:
-      - vSphere
-      - AWS
-    default: vSphere
-    title: Environment
-    description: Target Environment
-  size:
-    type: string
-    enum:
-      - small
-      - medium
-    description: Size of Nodes
-    title: Database Tier Size
+      - Small
+      - Large
+  Mtags:
+    type: array # Array of objects - syntax: $'{['key1', 'key2']}
+    title: Tags
+    description: tags to apply to machines
+    items:
+      type: object
+      properties:
+        key:
+          type: string
+          title: Key
+        value:
+          type: string
+          title: Value
   username:
     type: string
     minLength: 4
@@ -37,7 +58,7 @@ inputs:
     title: MySQL Data Disk Size
     description: Size of database disk
   clusterSize:
-    type: string
+    type: string # You can use custom inputs like clusterSize for conditions in the properties below, for instance this input will be used to determine the "count", small = 1 node for instance.
     enum:
       - small
       - medium
@@ -55,16 +76,20 @@ resources:
     type: Cloud.Machine
     properties:
       name: mysql
-      image: ubuntu
-      flavor: '${input.size}'
+      image: Ubuntu-16
+      flavor: small
       constraints:
-        - tag: '${"cloud:" + to_lower(input.env)}'
+        - tag: '${"env:" + to_lower(input.platform)}' # this constraint is using a tag that will specify the cloud and lower case the input to match the tag case. there are other function operators besides to_lower, some of them are: to_upper, merge, trim, replace..
+      tags: '${input.Mtags}'
+      count: '${input.dbenvsize == "Small" ? 1 : 2}' # You can use conditions to determine things like size of the environment. You could also do something like: '${input.count < 5 && input.size == 'small'} , or '${input.count < 2 ? "small" : "large}'. Other
       networks:
-        - name: '${resource.WP_Network.name}'
+        - name: '${resource.WP_Network.name}' # Resource variables let you bind to resource properties from other resources ex. - ${resource.app[0].id}
+          network: '${resource.WP_Network.id}'
       remoteAccess:
-        authentication: usernamePassword
+        authentication: usernamePassword #remote access property enables you to specify a remote access mechanism for the deployed machine
         username: '${input.username}'
         password: '${input.userpassword}'
+      ACMECorpID: 9333 #You can add custom properties to the YAML. Then these properties can be used to kick off an extensiblity subscription for instance. This custom property will kick off a subscription called ACME Hello World.
       cloudConfig: |
         #cloud-config
         repo_update: true
@@ -83,15 +108,18 @@ resources:
     type: Cloud.Machine
     properties:
       name: wordpress
-      image: ubuntu
-      count: >-
-        ${input.clusterSize== "small" ? 2 : (input.clusterSize == "medium" ? 3 :
-        4)}
+      image: Ubuntu-16
+      count: '${input.clusterSize== "small" ? 2 : (input.clusterSize == "medium" ? 3 : 4)}'
+      tags:
+        - key: cas.requestedBy
+          value: '${env.requestedBy}' # Environmental variables can be helpful if you want to get info about the object displayed in the properties section of the deployment, other examples - {env.blueprintID}
+      ACMECorpID: 9333
       constraints:
-        - tag: '${"cloud:" + to_lower(input.env)}'
+        - tag: '${"env:" + to_lower(input.platform)}'
       flavor: small
       networks:
         - name: '${resource.WP_Network.name}'
+          network: '${resource.WP_Network.id}'
       cloudConfig: |
         #cloud-config
         repo_update: true
