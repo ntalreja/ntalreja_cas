@@ -6,7 +6,6 @@ inputs:
     type: string
     enum:
       - 'cloud:vsphere'
-      - 'cloud:aws'
       - 'cloud:azure'
       - 'cloud:gcp'
 resources:
