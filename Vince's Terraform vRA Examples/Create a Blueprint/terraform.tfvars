@@ -1,5 +1,5 @@
-vra_refresh_token = "OB6gL10Q4XuNLUw8OvdluXKiND0IiQfm8RVnOnErpIztkqaB7Pp8Sto1JDaAnkaC"
+vra_refresh_token = ""
 vra_url = "https://api.mgmt.cloud.vmware.com"
 insecure = "false"
-project_name = "Dev_SDDC"
-blueprint_name = "TF_BP_Example_2"
+project_name = ""
+blueprint_name = ""
