@@ -1,0 +1,23 @@
+var resourceProperties = System.getContext().getParameter("__metadata_resourceProperties");
+for(var propertyName in resourceProperties) {
+    propertyValue = resourceProperties[propertyName]
+    if (propertyName == "machinename"){
+        machinename = propertyValue;
+    }
+    if (propertyName == "vcfqdn"){
+        vcfqdn = propertyValue;
+    }
+    if (propertyName == "vcuser"){
+        vcuser = propertyValue;
+    }
+    if (propertyName == "vcpassword"){
+        vcpassword = propertyValue;
+    }
+    if (propertyName == "remoteuser"){
+        remoteuser = propertyValue;
+    }
+    if (propertyName == "remotepassword"){
+        remotepassword = propertyValue;
+    }
+    //System.log(propertyName+": "+propertyValue);
+}
