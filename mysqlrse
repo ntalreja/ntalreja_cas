@@ -44,10 +44,10 @@ resources:
     dependsOn:
       - Custom_remotescript_2
     properties:
-      machinename: '${resource.MySQL_Server.resourceName}'
-      template_locker_creds: Win-Template-Local-Password
-      lcmfqdn: vra8-lcm-ga.cmbu.local
-      vc_cred_name: TMM-AUTO-VC
+      machinename: '${resource.MySQL_Server.resourceName}' # your code will have the name of the machine instead of MySQL_Server
+      template_locker_creds: Win-Template-Local-Password # enter your windows template locker name here
+      lcmfqdn: vra8-lcm-ga.cmbu.local # enter your lcm fqdn here
+      vc_cred_name: TMM-AUTO-VC # enter your vCenter creds here
       vcfqdn: sc2vc03.cmbu.local
       script: |
         sudo apt update -y
