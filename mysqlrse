@@ -1,0 +1,88 @@
+formatVersion: 1
+inputs:
+  username:
+    type: string
+    title: System Admin Account Username
+    default: demouser
+    description: The username you would like to have for the installation.
+  password:
+    type: string
+    pattern: '[a-z0-9A-Z@#$]+'
+    encrypted: true
+    default: vRealiz3!
+    title: OpenCart Admin Account Password
+    description: The password you would like to use for the ocuser account.
+  MachineName:
+    type: string
+    title: Name for the DB VM
+    description: Enter Name for DB Server.
+resources:
+  MySQL_Server:
+    type: Cloud.vSphere.Machine
+    properties:
+      image: Ubuntu-18
+      flavor: medium
+      newName: '${input.MachineName}'
+      cloudConfig: |
+        users:
+          - name: ${input.username}
+            sudo: ['ALL=(ALL) NOPASSWD:ALL']
+            groups: sudo
+            shell: /bin/bash
+
+        runcmd:
+          - USER=${input.username}
+          - PASS=${input.password}
+          - echo $USER:$PASS | /usr/sbin/chpasswd
+          - echo ${input.username}:$PASS | /usr/sbin/chpasswd
+          - sed -i "s/PasswordAuthentication no/PasswordAuthentication yes/g" /etc/ssh/sshd_config
+          - service ssh reload
+      constraints:
+        - tag: 'env:vsphere'
+  Install mySQL:
+    type: Custom.remotescript
+    dependsOn:
+      - Custom_remotescript_2
+    properties:
+      machinename: '${resource.MySQL_Server.resourceName}'
+      template_locker_creds: Win-Template-Local-Password
+      lcmfqdn: vra8-lcm-ga.cmbu.local
+      vc_cred_name: TMM-AUTO-VC
+      vcfqdn: sc2vc03.cmbu.local
+      script: |
+        sudo apt update -y
+        sudo apt install mysql-server-5.7 -y
+        sudo apt install mysql-client -y
+        sudo apt install unzip
+        export DEBIAN_FRONTEND=noninteractive
+        export USER=${input.username}
+        sudo hostnamectl set-hostname ${input.MachineName}
+        echo "mysql-server-5.7 mysql-server/root_password password root" | sudo debconf-set-selections
+        echo "mysql-server-5.7 mysql-server/root_password_again password root" | sudo debconf-set-selections
+        touch ~/mysql.cnf
+        echo "[client]" >> ~/mysql.cnf
+        echo "user=root" >> ~/mysql.cnf
+        echo "password=root" >> ~/mysql.cnf
+        sudo chmod 777 /etc/mysql/mysql.conf.d/mysqld.cnf
+        sudo sed -i 's/#slow/slow/g' /etc/mysql/mysql.conf.d/mysqld.cnf
+        sudo sed -i 's/#long_query_time/long_query_time/g' /etc/mysql/mysql.conf.d/mysqld.cnf
+        sudo sed -i 's/bind-address/#bind-address/g' /etc/mysql/mysql.conf.d/mysqld.cnf
+        sudo chmod 444 /etc/mysql/mysql.conf.d/mysqld.cnf
+        sudo systemctl restart mysql
+        sudo mysql --defaults-extra-file=~/mysql.cnf -e "CREATE USER '$USER'@'%' IDENTIFIED BY 'Password123'"
+        sudo mysql --defaults-extra-file=~/mysql.cnf -e "GRANT ALL ON *.* TO '$USER'@'%' IDENTIFIED BY 'Password123'"
+        sudo mysql --defaults-extra-file=~/mysql.cnf -e 'CREATE DATABASE opencart'
+        sudo mysql --defaults-extra-file=~/mysql.cnf -e 'USE opencart'
+        sudo mysql --defaults-extra-file=~/mysql.cnf -e 'flush privileges'
+      reboot: 1
+  Custom_remotescript_2:
+    type: Custom.remotescript
+    dependsOn:
+      - MySQL_Server
+    properties:
+      vcfqdn: sc2vc03.cmbu.local
+      vc_cred_name: TMM-AUTO-VC
+      template_locker_creds: linux_template
+      machinename: '${resource.MySQL_Server.resourceName}'
+      script: echo "Do Nothing"
+      reboot: true
