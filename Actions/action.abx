@@ -1,0 +1,11 @@
+---
+exportVersion: "1"
+exportId: "8a5ef51272eceeb80172ed1038e60122"
+name: "Get VMC SDDC Data"
+runtime: "python"
+entrypoint: "handler"
+timeoutSeconds: 180
+deploymentTimeoutSeconds: 900
+dependencies: "requests\n"
+actionType: "SCRIPT"
+memoryInMB: 300
