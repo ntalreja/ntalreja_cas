@@ -5,11 +5,11 @@ import json
 
 strProdURL = "https://vmc.vmware.com"
 # add token of your Zero Cloud SDDC
-Refresh_Token = "2rgGMnx7PhZ2Mpz1ooEo2KdVvju79smer4pVRjhb5H6NreeXHa93xa7nFQH5xoWY"
+Refresh_Token = ""
 # add Org of your Zero Cloud SDDC
-ORG_ID = "2acf4023-1778-4e6a-a892-7635b8c7f4fb"
+ORG_ID = ""
 # add Zero Cloud SDDC ID 
-SDDC_ID = "32df704d-d2d4-494b-852e-631011909d4e"
+SDDC_ID = ""
 
 def getAccessToken(myKey):
     params = {'refresh_token': myKey}
