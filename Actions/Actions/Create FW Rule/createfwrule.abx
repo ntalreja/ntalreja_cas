@@ -1,0 +1,21 @@
+---
+exportVersion: "1"
+exportId: "8a5e034c72d63d720172e68b031e525e"
+name: "Create FW Rule"
+runtime: "python"
+entrypoint: "handler"
+inputs:
+  scope: "all"
+  action: "ALLOW"
+  display: "myfwrule1012"
+  services: "ANY"
+  source_groups: "MyGroup101"
+  destination_groups: "MyGroup101"
+timeoutSeconds: 180
+deploymentTimeoutSeconds: 900
+dependencies: "requests\nurllib3\n"
+actionType: "SCRIPT"
+provider: "aws"
+configuration:
+  const_aws-iam_role: "Lambda"
+memoryInMB: 300
