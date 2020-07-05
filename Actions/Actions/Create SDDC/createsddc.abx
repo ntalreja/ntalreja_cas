@@ -1,0 +1,18 @@
+---
+exportVersion: "1"
+exportId: "8a5ef51272efdfdc0173005019e47ad1"
+name: "Create VMC SDDC"
+runtime: "python"
+entrypoint: "handler"
+inputs:
+  sddcName: "sddc_vra_cloud"
+  number_hosts: 3
+  targetRegion: "EU_WEST_1"
+timeoutSeconds: 180
+deploymentTimeoutSeconds: 900
+dependencies: "requests\nurllib3"
+actionType: "SCRIPT"
+provider: "aws"
+configuration:
+  const_aws-iam_role: "Lambda"
+memoryInMB: 300
