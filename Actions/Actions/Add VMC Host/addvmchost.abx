@@ -1,0 +1,16 @@
+---
+exportVersion: "1"
+exportId: "8a5e034c72d63d720172ebe867ba26b0"
+name: "Add VMC Host"
+runtime: "python"
+entrypoint: "handler"
+inputs:
+  number_hosts: 1
+timeoutSeconds: 180
+deploymentTimeoutSeconds: 900
+dependencies: "requests\nurllib3"
+actionType: "SCRIPT"
+provider: "aws"
+configuration:
+  const_aws-iam_role: "Lambda"
+memoryInMB: 300
