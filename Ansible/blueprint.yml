@@ -1,0 +1,66 @@
+formatVersion: 1
+name: Ansible
+version: 1
+inputs:
+  app:
+    type: string
+    default: nongnix
+resources:
+  WindowsVM:
+    type: Cloud.vSphere.Machine
+    properties:
+      name: e2e-a8n-ansible-windows
+      flavor: small
+      image: windows-ansible
+      networks:
+        - network: '${resource.Ansible_vSphere_Network.id}'
+  AnsibleOnWindows:
+    type: Cloud.Ansible
+    properties:
+      account: eso-ansible
+      username: administrator
+      password: Dynam1c0ps
+      maxConnectionRetries: 20
+      playbooks:
+        provision:
+          - /root/ansible-playbooks/windows_enableiis.yml -e 'enabled=true'
+      osType: windows
+      inventoryFile: /root/ansible-playbooks/windowshosts
+      groups:
+        - win2012
+      host: '${resource.WindowsVM.*}'
+  LinuxVM:
+    type: Cloud.vSphere.Machine
+    properties:
+      name: e2e-a8n-ansible-linux
+      flavor: small
+      imageRef: 'https://cloud-images.ubuntu.com/releases/16.04/release-20190605/ubuntu-16.04-server-cloudimg-amd64.ova'
+      remoteAccess:
+        authentication: generatedPublicPrivateKey
+      networks:
+        - network: '${resource.Ansible_vSphere_Network.id}'
+  Cloud_Ansible_1:
+    type: Cloud.Ansible
+    properties:
+      host: '${resource.LinuxVM.*}'
+      osType: linux
+      account: eso-ansible
+      username: ubuntu
+      maxConnectionRetries: 20
+      hostVariables: |
+        port: 8000
+        foo:
+          field1: one
+          field2: two
+      groups:
+        - linux_vms
+      playbooks:
+        provision:
+          - /root/ansible-playbooks/install_apache.yml --extra-vars '{\"version\":\"1.23.45\",\"other_variable\":\"foo\"}'
+          - '${input.app == "nginx" ? "/etc/ansible/playbooks/linux/nginx.yml" : ""}'
+  Ansible_vSphere_Network:
+    type: Cloud.vSphere.Network
+    properties:
+      networkType: existing
+      constraints:
+        - tag: e2e-a8n-vsphere-puppet
