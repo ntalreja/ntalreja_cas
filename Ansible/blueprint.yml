@@ -17,9 +17,9 @@ resources:
   AnsibleOnWindows:
     type: Cloud.Ansible
     properties:
-      account: eso-ansible
+      account: youraccount
       username: administrator
-      password: Dynam1c0ps
+      password: passwrd
       maxConnectionRetries: 20
       playbooks:
         provision:
