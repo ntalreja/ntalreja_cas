@@ -1,0 +1,58 @@
+formatVersion: 1
+inputs:
+  EC2_hostname:
+    type: string
+  VMC_hostname:
+    type: string
+  VolSize:
+    type: integer
+  S3Name:
+    type: string
+resources:
+  S3 Bucket:
+    type: Cloud.Service.AWS.S3.Bucket
+    properties:
+      region: us-west-1
+      account: {your account}
+      bucket: '${input.S3Name}'
+  Volume1:
+    type: Cloud.AWS.Volume
+    properties:
+      capacityGb: '${input.VolSize}'
+      tags:
+        - key: vol
+          value: stor
+  EC2 Instance:
+    type: Cloud.AWS.EC2.Instance
+    properties:
+      image: ubuntu
+      flavor: Small
+      newName: '${input.EC2 hostname}'
+      constraints:
+        - tag: 'aws:main'
+      networks:
+        - network: '${resource["AWS Net"].id}'
+      attachedDisks:
+        - source: '${resource.Volume1.id}'
+  VMC Machine:
+    type: Cloud.vSphere.Machine
+    properties:
+      image: vmc_centos
+      flavor: Small
+      newName: '${input.VMC hostname}'
+      constraints:
+        - tag: 'env:vmc'
+      networks:
+        - network: '${resource["VMC Net"].id}'
+  AWS Net:
+    type: Cloud.Network
+    properties:
+      networkType: existing
+      constraints:
+        - tag: 'aws:main'
+  VMC Net:
+    type: Cloud.Network
+    properties:
+      networkType: existing
+      constraints:
+        - tag: 'env:vmc'
