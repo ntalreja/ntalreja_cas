@@ -1,0 +1,11 @@
+---
+exportVersion: "1"
+exportId: "8a5ef512733194b0017339aed36165fe"
+name: "Get SDDC Name/ID"
+runtime: "python"
+entrypoint: "handler"
+timeoutSeconds: 180
+deploymentTimeoutSeconds: 900
+dependencies: "requests\nurllib3\n"
+actionType: "SCRIPT"
+memoryInMB: 300
