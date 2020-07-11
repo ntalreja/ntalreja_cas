@@ -1,10 +1,16 @@
-Welcome to the collection of vRealize Automation ABX Python Scripts that will connect and help you manage your VMware Cloud on AWS (VMC) SDDC & NSX-T environment!
+Welcome to the collection of vRealize Automation ABX Python Scripts that will 
+connect and help you manage your VMware Cloud on AWS (VMC) SDDC & NSX-T
+environment!
 
-These scripts can be uploaded into your vRealize Automation Cloud or vRealize Automation 8.x environment.
+These scripts can be uploaded into your vRealize Automation Cloud
+or vRealize Automation 8.x environment.
 
-If you are not familiar with ABX, it stands for Action Based Extensibility. This is a cool feature in vRealize Automation that is basically multi-cloud FaaS which support python
-and node.js across clouds, and Powershell for on-prem vCenter. 
+If you are not familiar with ABX, it stands for Action Based Extensibility. 
+This is a cool feature in vRealize Automation that is basically multi-cloud
+FaaS which support python and node.js across clouds, and Powershell
+for on-prem vCenter. 
 
-So basically this site contains a compilation of ABX scripts that can help with VMC on AWS onboarding and ongoing maintanence. 
+So basically this site contains a compilation of ABX scripts that can help
+with VMC on AWS onboarding and ongoing maintanence. 
 
 This site is a work in progress! And we welcome input.
