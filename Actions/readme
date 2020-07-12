@@ -11,6 +11,26 @@ FaaS which support python and node.js across clouds, and Powershell
 for on-prem vCenter. 
 
 So basically this site contains a compilation of ABX scripts that can help
-with VMC on AWS onboarding and ongoing maintanence. 
+with VMC on AWS onboarding and ongoing maintanence. These scripts are all 
+written in python.
+
+Also there is a blog in progress that will walk you through in more detail how
+to use these scripts within vRealize Automation.
 
 This site is a work in progress! And we welcome input.
+
+Instructions:
+
+Download .abx and .py, zip the files up and import into vRealize Automation 
+Cloud. Enter your Refresh Token into the script. Also you will want to have your 
+SDDC ID and ORG ID available. Some scripts require both SDDC and ORG IDs, and
+some just one or the other.
+
+Know Issues:
+
+When using AWS Lambda as the FaaS provider you may encounter a warning message
+in the logs referring to urllib3 and charset version mismatch. This does 
+not appear to affect the script action but can be annoying when doing a GET
+action and you just want to see the log output. One method that seems to work to
+get around this is using the On-Prem ABX appliance instead of AWS Lambda.
+
