@@ -27,7 +27,7 @@ import datetime                         #need this for a time stamp
 # To use this script you need to create an OAuth Refresh token for your Org
 # You can generate an OAuth Refresh Token using the tool at vmc.vmware.com
 # https://console.cloud.vmware.com/csp/gateway/portal/#/user/tokens
-strAccessKey = "2rgGMnx7PhZ2Mpz1ooEo2KdVvju79smer4pVRjhb5H6NreeXHa93xa7nFQH5xoWY"
+strAccessKey = ""
 
 
 #where are our service end points
