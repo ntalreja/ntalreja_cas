@@ -1,3 +1,5 @@
+# When using with ABX, the "Test" button will execute the script
+
 import json
 import base64
 import requests
