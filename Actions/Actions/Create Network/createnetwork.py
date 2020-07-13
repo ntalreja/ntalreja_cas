@@ -1,3 +1,5 @@
+# When using with ABX , the "Test" button will execute the script.
+
 import requests                         # need this for Get/Post/Delete
 import json
 
