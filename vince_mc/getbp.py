@@ -41,7 +41,7 @@ def get_blueprints():
   response = requests.get(api_url, headers=headers1, verify=False)
   if response.status_code == 200:
       json_data = json.loads(response.content.decode('utf-8'))
-      print('Successfully Launched vRA 8 Field Demo Nightly Build')
+      print('OK')
   else:
     return None
   print(response.text)
