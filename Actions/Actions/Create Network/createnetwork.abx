@@ -1,0 +1,21 @@
+---
+exportVersion: "1"
+exportId: "8a5e97d67310a09d01732ebdf22a6d69"
+name: "Create Network"
+runtime: "python"
+entrypoint: "handler"
+description: "Create NSXT Network"
+inputs:
+  Name: ""
+  Type: ""
+  Range: ""
+  Gateway: ""
+  Domain name: ""
+timeoutSeconds: 180
+deploymentTimeoutSeconds: 900
+dependencies: "requests\nurllib3"
+actionType: "SCRIPT"
+provider: "aws"
+configuration:
+  const_aws-iam_role: "Lambda"
+memoryInMB: 300
